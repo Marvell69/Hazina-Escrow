@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Upload,
@@ -39,17 +39,50 @@ const INITIAL: FormState = {
   dataText: "",
 };
 
+const STORAGE_KEY = "hazina_sell_form_draft";
+
+function loadDraft(): FormState {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return INITIAL;
+    return { ...INITIAL, ...(JSON.parse(raw) as Partial<FormState>) };
+  } catch {
+    return INITIAL;
+  }
+}
+
+function saveDraft(form: FormState): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(form));
+  } catch {
+    // localStorage may be unavailable in certain browser contexts
+  }
+}
+
+function clearDraft(): void {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // ignore
+  }
+}
+
 export default function SellPage() {
   const { locale, t } = useI18n();
   const catalog = getCatalog(locale);
   const navigate = useNavigate();
-  const [form, setForm] = useState<FormState>(INITIAL);
+  const [form, setForm] = useState<FormState>(loadDraft);
   const [tab, setTab] = useState<Tab>("form");
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const [jsonError, setJsonError] = useState("");
+
+  // Persist form draft across page reloads
+  useEffect(() => {
+    saveDraft(form);
+  }, [form]);
 
   const set =
     (key: keyof FormState) =>
@@ -124,6 +157,7 @@ export default function SellPage() {
         sellerWallet: form.sellerWallet.trim(),
         data: JSON.parse(form.dataText),
       });
+      clearDraft();
       setSuccess(true);
     } catch (err: unknown) {
       setError(
@@ -155,6 +189,7 @@ export default function SellPage() {
           <div className="flex gap-3 justify-center">
             <button
               onClick={() => {
+                clearDraft();
                 setForm(INITIAL);
                 setSuccess(false);
               }}
