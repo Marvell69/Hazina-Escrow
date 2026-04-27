@@ -4,6 +4,7 @@ The Soroban contract now supports:
 
 - A default platform fee plus dataset-specific fee overrides
 - Admin-managed whitelist and blacklist controls for buyer and seller addresses
+- An admin-controlled pause/unpause circuit breaker for emergencies
 - Invariant-focused verification tests that can be run independently
 
 ## Verification scripts

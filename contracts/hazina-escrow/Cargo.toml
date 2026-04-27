@@ -13,6 +13,9 @@ soroban-sdk = { version = "22.0.0", features = ["alloc"] }
 soroban-sdk = { version = "22.0.0", features = ["testutils", "alloc"] }
 proptest     = { version = "1", default-features = false, features = ["std"] }
 
+[features]
+fuzz-tests = []
+
 [profile.release]
 opt-level = "z"
 overflow-checks = true
