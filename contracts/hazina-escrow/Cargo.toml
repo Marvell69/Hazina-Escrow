@@ -16,6 +16,9 @@ dotenvy      = "0.15"
 serde_json   = "1.0"
 
 
+[features]
+fuzz-tests = []
+
 [profile.release]
 opt-level = "z"
 overflow-checks = true
