@@ -39,6 +39,8 @@ export const en = {
       resetSearch: 'Reset search',
       copyAddress: 'Copy address',
       copyMemo: 'Copy memo',
+      connectWallet: 'Connect Wallet',
+      disconnect: 'Disconnect',
     },
     labels: {
       price: 'Price',

@@ -55,19 +55,6 @@ export default function Navbar() {
     localStorage.removeItem("hazina_wallet");
   };
 
-  // Verify connection on mount to handle persistence across refreshes
-  useEffect(() => {
-    const verifyConnection = async () => {
-      if (publicKey) {
-        const connected = await isConnected();
-        if (!connected) {
-          handleDisconnect();
-        }
-      }
-    };
-    verifyConnection();
-  }, [publicKey]);
-
   const truncateAddress = (addr: string) => {
     if (!addr || addr.length < 8) return addr;
     return `${addr.slice(0, 4)}...${addr.slice(-4)}`;
@@ -126,6 +113,29 @@ export default function Navbar() {
           {/* CTA */}
           <div className="hidden xl:flex items-center gap-3 shrink-0">
             <LocaleSwitcher />
+
+            {publicKey ? (
+              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gold/10 border border-gold/25 text-gold text-sm font-medium">
+                <Wallet className="w-4 h-4" />
+                <span className="font-mono">{truncateAddress(publicKey)}</span>
+                <button
+                  onClick={handleDisconnect}
+                  className="ml-1 hover:text-white transition-colors"
+                  title={t("common.actions.disconnect")}
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleConnect}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gold/30 text-gold hover:bg-gold/10 transition-all duration-200 text-sm font-medium"
+              >
+                <Wallet className="w-4 h-4" />
+                {t("common.actions.connectWallet")}
+              </button>
+            )}
+
             <Link
               to="/marketplace"
               className="btn-gold text-sm px-4 py-2 whitespace-nowrap"

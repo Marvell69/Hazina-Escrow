@@ -39,6 +39,8 @@ export const es: EnglishMessages = {
       resetSearch: 'Restablecer búsqueda',
       copyAddress: 'Copiar dirección',
       copyMemo: 'Copiar memo',
+      connectWallet: 'Conectar wallet',
+      disconnect: 'Desconectar',
     },
     labels: {
       price: 'Precio',
